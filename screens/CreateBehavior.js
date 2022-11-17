@@ -20,16 +20,18 @@ const CreateBehavior = () => {
 
   return (
     <View style={styles.container}>
-      {!isAdding ? (
-        <Pressable style={styles.addButton} onPress={() => setIsAdding(true)}>
-          <Text>Create a New Behavior</Text>
-        </Pressable>
-      ) : null}
+      <View style={styles.createButtonView}>
+        {!isAdding ? (
+          <Pressable style={styles.addButton} onPress={() => setIsAdding(true)}>
+            <Text>Create a New Behavior</Text>
+          </Pressable>
+        ) : null}
+      </View>
 
       {/* conditionally expose the form on press of button */}
       {isAdding ? <CreateBehaviorForm /> : null}
 
-      <Text>Choose from Existing Behaviors</Text>
+      <Text style={styles.behaviorText}>Choose from Existing Behaviors</Text>
       <SearchableBehaviorList />
     </View>
   );
@@ -41,6 +43,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    borderTopWidth: "1px",
+  },
+  createButtonView: {
+    borderBottomWidth: "1px",
+    width: "100%",
+    maxWidth: 550,
+  },
+
+  behaviorText: {
+    fontSize: "20px",
+    color: "#001F54",
+    textAlign: "center",
+    opacity: 1,
+    marginBottom: "2%",
+    fontWeight: "bold",
+    marginTop: 5,
   },
   input: {
     height: 40,
@@ -60,6 +78,7 @@ const styles = StyleSheet.create({
     marginTop: "1%",
     borderRadius: 4,
     elevation: 3,
+    width: "50%",
   },
   buttonText: {},
 });
