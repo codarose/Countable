@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  
+
   backgroundVideo: {
     position: "absolute",
     top: 0,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     height: "100%",
     bottom: 0,
     right: 0,
-    opacity: 0.5,
+    opacity: 0.3,
   },
 });
 export default HomeScreen;
