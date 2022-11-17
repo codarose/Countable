@@ -8,8 +8,9 @@ class NewSession extends Component {
     return (
       <View style={styles.container}>
         <Text>Choose or Create a Subject: </Text>
-        <Text>Choose a Template or </Text>
         <Text>Session Environment: </Text>
+        <Text>Choose a Template or </Text>
+       
         <Button
           title="Add Behaviors"
           onPress={() => this.props.navigation.navigate("CreateBehavior")}
