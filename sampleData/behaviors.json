@@ -1,0 +1,4 @@
+[{"id": "1", "class_id" : "1", "behavior":"drinking", "class":"count", "comment":"number of glasses"},
+{"id": "2", "class_id" : "2", "behavior":"drinking", "class":"duration", "comment":"amount of time student drinks"},
+{"id": "3", "class_id" : "1", "behavior":"eating", "class":"count", "comment":"number of fruit a student eats"},
+{"id": "4", "class_id" : "2", "behavior":"eating", "class":"duration", "comment":"how long a student eats for"}]

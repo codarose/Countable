@@ -1,0 +1,3 @@
+[{"id":"1", "title":"session one", "environment":"indoors-classroom", "comment":"noisy and packed with kids"},
+{"id":"2", "title":"session two", "environment":"indoors-cafeteria", "comment":"none"},
+{"id":"3", "title":"session one", "environment":"outdoors-playground", "comment":"sunny day, no wind"}]
