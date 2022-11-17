@@ -7,6 +7,7 @@ class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <Text>Hi</Text>
         <Text>Welcome to Countability!</Text>
         <Text>A Clinical Behavior Tracking App</Text>
         <Button
