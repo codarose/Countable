@@ -17,18 +17,6 @@ class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-<<<<<<< HEAD
-      <Text>Hi</Text>
-        <Text>Welcome to Countability!</Text>
-        <Text>A Clinical Behavior Tracking App</Text>
-        <Button
-          title="Start Session"
-          onPress={() => this.props.navigation.navigate("NewSession")}
-        />
-        <Button
-          title="Select/Create Session Template"
-          onPress={() => this.props.navigation.navigate("ListAllTemplates")}
-=======
         <Video
           // ref={React.useRef(null)}
           source={videoBackground}
@@ -39,9 +27,9 @@ class HomeScreen extends Component {
           resizeMode="cover"
           isLooping
           //  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
->>>>>>> 0bb7780ea275f02adcd1dd9c6b59ace61a616e2b
         />
         <View>
+        <Text>Hi</Text>
           <Text style={styles.welcomeMessage}>Welcome to Countability!</Text>
           <Text style={styles.subHeading}>
             A Clinical Behavior Tracking App
