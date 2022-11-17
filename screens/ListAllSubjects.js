@@ -8,11 +8,11 @@ class ListAllSubjects extends Component {
     return (
       <View style={styles.container}>
         <Text>Choose or Create a Subject: </Text>
-        <Text>Choose a Template or </Text>
-        <Button title="Add Behaviors" />
+        
+
         <Button
-          title="Start Session"
-          onPress={() => this.props.navigation.navigate("ActiveSession")}
+          title="Add New Subject"
+          onPress={() => this.props.navigation.navigate("CreateSubject")}
         />
       </View>
     );

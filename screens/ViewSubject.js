@@ -12,6 +12,10 @@ class ViewSubject extends Component {
         <Button title="Edit" />
         <Button title="Save" />
         <Button title="Delete" />
+        <Button
+          title="Start a Session"
+          onPress={() => this.props.navigation.navigate("NewSession")}
+        />
       </View>
     );
   }
