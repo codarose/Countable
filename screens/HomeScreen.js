@@ -3,7 +3,15 @@ import { Component } from "react";
 import { Video, AVPlaybackStatus } from "expo-av";
 
 import videoBackground from "./../assets/child-puzzle.mp4";
-import { AppRegistry, StyleSheet, Text, View, Button } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Pressable,
+} from "react-native";
+import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 class HomeScreen extends Component {
   render() {
@@ -21,26 +29,35 @@ class HomeScreen extends Component {
           //  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
         <View>
-          <Text>Welcome to Countability!</Text>
-          <Text>A Clinical Behavior Tracking App</Text>
-          <Button
-            title="Start Session"
+          <Text style={styles.welcomeMessage}>Welcome to Countability!</Text>
+          <Text style={styles.subHeading}>
+            A Clinical Behavior Tracking App
+          </Text>
+          <Pressable
+            style={styles.button}
             onPress={() => this.props.navigation.navigate("NewSession")}
-          />
-          <Button
-            title="Select/Create Session Template"
+          >
+            <Text style={styles.buttonText}>Start a Session</Text>
+          </Pressable>
+          <Pressable
+            style={styles.button}
             onPress={() => this.props.navigation.navigate("ListAllTemplates")}
-          />
-
-          <Button
-            title="View Past Sessions"
+          >
+            <Text style={styles.buttonText}>View Session Templates</Text>
+          </Pressable>
+          <Pressable
+            style={styles.button}
             onPress={() => this.props.navigation.navigate("ListAllSessions")}
-          />
+          >
+            <Text style={styles.buttonText}>View Past Sessions</Text>
+          </Pressable>
 
-          <Button
-            title="View Subjects"
+          <Pressable
+            style={styles.button}
             onPress={() => this.props.navigation.navigate("ListAllSubjects")}
-          />
+          >
+            <Text style={styles.buttonText}>View Subjects</Text>
+          </Pressable>
         </View>
       </View>
     );
@@ -54,7 +71,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  button: {
+    backgroundColor: "rgba(0, 127, 255, 0.6)",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    marginLeft: "8%",
+    marginBottom: "3%",
+    marginTop: "2%",
+    marginRight: "8%",
+    borderRadius: 4,
+    elevation: 3,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: "18px",
+  },
 
+  welcomeMessage: {
+    fontSize: "28px",
+    color: "#001F54",
+    textAlign: "center",
+    opacity: 1,
+    marginBottom: "2%",
+    fontWeight: "bold",
+  },
+  subHeading: {
+    color: "#001F54",
+    fontStyle: "italic",
+    textAlign: "center",
+    marginBottom: "15%",
+  },
   backgroundVideo: {
     position: "absolute",
     top: 0,
