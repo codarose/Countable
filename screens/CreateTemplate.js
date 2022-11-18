@@ -1,10 +1,24 @@
-import React from "react";
+import { useState } from "react";
 import { Component } from "react";
+import { MultiSelect } from "react-native-element-dropdown";
 
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
+const behaviorDropDown = [
+  { label: "Add New", value: "1" },
+  { label: "Pacing", value: "2" },
+  { label: "Leaving the room", value: "3" },
+  { label: "Putting head down", value: "4" },
+  { label: "Asking a question", value: "5" },
+  { label: "Ignoring direct questions", value: "7" },
+  { label: "Coughing", value: "8" },
+  { label: "Scribbling on Wall", value: "9" },
+  { label: "Tantrum", value: "10" },
+  { label: "Asking for Food", value: "11" },
+];
+const CreateTemplate = ({ navigation }) => {
+  const [selectedBehaviors, setSelectedBehaviors] = useState([]);
 
-class CreateBehavior extends Component {
-  render() {
+  {
     return (
       <View style={styles.container}>
         <View style={styles.formStyling}>
@@ -18,18 +32,53 @@ class CreateBehavior extends Component {
             //  value={sessionNotes}
             placeHolder="session notes"
           />
-          <Text>Duration of Session</Text>
-          <Text>Behaviors Associated to this Session Type </Text>
+
+          <Text style={styles.inputFields}>Duration of Session</Text>
+          <TextInput
+            style={styles.input}
+            // onChangeText={onAddBehavior}
+            //  value={sessionNotes}
+            placeHolder="session notes"
+          />
+          <Text style={styles.inputFields}>
+            Behaviors Associated to this Session Template
+          </Text>
+
+          <MultiSelect
+            style={styles.dropdown}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            search
+            data={behaviorDropDown}
+            labelField="label"
+            valueField="value"
+            placeholder="Select item"
+            searchPlaceholder="Search..."
+            value={selectedBehaviors}
+            onChange={(item) => {
+              setSelectedBehaviors(item);
+            }}
+            // renderLeftIcon={() => (
+            //   <AntDesign
+            //     style={styles.icon}
+            //     color="black"
+            //     name="Safety"
+            //     size={20}
+            //   />
+            // )}
+            selectedStyle={styles.selectedStyle}
+          />
           <Pressable title="Save" />
         </View>
       </View>
     );
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
@@ -132,4 +181,4 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 });
-export default CreateBehavior;
+export default CreateTemplate;
