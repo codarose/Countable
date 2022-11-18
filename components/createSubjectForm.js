@@ -17,15 +17,16 @@ const data = [
 ];
 
 function CreateSubjectForm(props) {
-  const [behavior, onAddBehavior] = useState("Enter Behavior Name");
-  const [behaviorNotes, onAddBehaviorNotes] = useState("Enter Behavior Notes");
+  const [subject, onAddSubject] = useState("Enter Subject Name");
+  const [subjectNotes, onAddSubjectNotes] = useState(
+    "Enter notes about Subject here"
+  );
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [borderColor, setBorderColor] = useState("gray");
 
   function customOnFocus() {
     setBorderColor("orange");
-    onAddBehavior("");
   }
 
   function customOnBlur() {
@@ -41,10 +42,10 @@ function CreateSubjectForm(props) {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.createNewBehavior}>Create a new Behavior</Text>
+      <Text style={styles.createNewBehavior}>Create a new Subject</Text>
       <View style={styles.formStyling}>
         <Text style={styles.specify}>
-          Create a name and set the type of measurement for your behavior.
+          Set a name or alias for your subject and specify any notes you have.
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.inputFields}>Name</Text>
@@ -52,56 +53,23 @@ function CreateSubjectForm(props) {
         </View>
         <TextInput
           style={[{ borderColor: borderColor }, styles.input]}
-          onChangeText={onAddBehavior}
-          value={behavior}
+          onChangeText={onAddSubject}
+          value={subject}
           onFocus={customOnFocus}
           onBlur={customOnBlur}
           placeHolder=""
         />
 
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.inputFields}>Type of Measurement</Text>
-          <Text style={styles.redAsterisk}>*</Text>
-        </View>
         {/* Replace buttons with a drop down list */}
-        {renderLabel()}
-        <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: "orange" }]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={data}
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? "Select item" : "..."}
-          searchPlaceholder="Search..."
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(item) => {
-            setValue(item.value);
-            setIsFocus(false);
-          }}
-          // renderLeftIcon={() => (
-          //   <AntDesign
-          //     style={styles.icon}
-          //     color={isFocus ? "blue" : "black"}
-          //     name="Safety"
-          //     size={20}
-          //   />
-          // )}
-        />
-        <Text style={styles.inputFields}>
-          Notes (optional)</Text>
+
+        <Text style={styles.inputFields}>Notes (optional)</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onAddBehavior}
-          value={behaviorNotes}
+          onChangeText={onAddSubjectNotes}
+          value={subjectNotes}
           onFocus={customOnFocus}
           onBlur={customOnBlur}
-          placeHolder="behavior notes"
+          placeHolder="subject notes"
         />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Pressable style={styles.saveButton}>
@@ -243,7 +211,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     width: "20%",
     marginLeft: 8,
-    
   },
 
   icon: {

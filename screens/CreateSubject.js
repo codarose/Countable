@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Component } from "react";
-
+import CreateSubjectForm from "../components/createSubjectForm";
 import { StyleSheet, Text, View, Button } from "react-native";
 import axios from "axios"; //will need to have axios installed and imported into file
 
@@ -59,7 +59,7 @@ const CreateSubject = ({ navigation }) => {
   {
     return (
       <View style={styles.container}>
-        <Text>Choose or Create a Subject: </Text>
+        <CreateSubjectForm />
         {/* map through subjects from data received in API call*/}
         {/* subjects.map((subject) =>{
   return (
@@ -111,7 +111,7 @@ const CreateSubject = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   // flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",

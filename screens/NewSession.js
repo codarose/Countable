@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Component } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import { MultiSelect } from "react-native-element-dropdown";
 

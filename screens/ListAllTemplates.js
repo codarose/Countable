@@ -1,17 +1,16 @@
 import React from "react";
 import { Component } from "react";
 
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 
 const ListAllTemplates = ({ navigation }) => {
   {
     return (
       <View style={styles.container}>
-        <Text>Choose or Create a Subject: </Text>
-        <Text>Choose a Template or </Text>
-        <Button title="Add Behaviors" />
-
-        <Button title="" onPress={() => navigation.navigate("ActiveSession")} />
+        <Text>List of Existing Templates </Text>
+        <Pressable onPress={() => navigation.navigate("CreateTemplate")}>
+          <Text>Create a New Template</Text>
+        </Pressable>
       </View>
     );
   }
