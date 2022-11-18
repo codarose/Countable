@@ -1,5 +1,6 @@
 import React from "react";
 import { Component } from "react";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 import {
   StyleSheet,
@@ -12,6 +13,7 @@ import {
 
 import CreateBehaviorForm from "../components/CreateBehaviorForm.js";
 import SearchableBehaviorList from "../components/SearchableBehaviorList";
+
 // We might want to extract "createbehavior" into a reusable component
 // that can be made visible on multiple screens, rather than always navigating to
 // a separate screen... not sure
@@ -27,7 +29,6 @@ const CreateBehavior = () => {
           </Pressable>
         ) : null}
       </View>
-
       {/* conditionally expose the form on press of button */}
       {isAdding ? <CreateBehaviorForm /> : null}
 
@@ -40,12 +41,14 @@ const CreateBehavior = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    //  flexDirection: "column",
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     borderTopWidth: "1px",
   },
   createButtonView: {
+    //flex: 0.1,
     borderBottomWidth: "1px",
     width: "100%",
     maxWidth: 550,
@@ -74,11 +77,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
-    marginBottom: "1%",
-    marginTop: "1%",
+    marginBottom: "3%",
+    marginTop: "3%",
+    marginLeft: '10%',
+    marginRight: '10%',
     borderRadius: 4,
     elevation: 3,
-    width: "50%",
+   
   },
   buttonText: {},
 });

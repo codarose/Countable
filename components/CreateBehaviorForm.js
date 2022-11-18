@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, React } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
@@ -15,10 +15,17 @@ const data = [
   { label: "Frequency", value: "1" },
   { label: "Duration", value: "2" },
 ];
+
 function CreateBehaviorForm(props) {
-  const [behavior, onAddBehavior] = React.useState("Type a Behavior Here");
-  const [value, setValue] = React.useState(null);
-  const [isFocus, setIsFocus] = React.useState(false);
+  const [behavior, onAddBehavior] = useState("Type a Behavior Here");
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+  const [focusBorderColor, setFocusBorderColor] = useState("black");
+
+  function customOnFocus() {
+    setFocusBorderColor("blue");
+  }
+
   const renderLabel = () => {
     if (value || isFocus) {
       return <Text style={[styles.label, isFocus && { color: "blue" }]}></Text>;
@@ -29,10 +36,12 @@ function CreateBehaviorForm(props) {
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.inputFields}>Behavior Name: </Text>
+
         <TextInput
-          style={styles.input}
+          style={[{ borderColor: focusBorderColor }, styles.input]}
           onChangeText={onAddBehavior}
           value={behavior}
+          onFocus={customOnFocus}
           placeHolder=""
         />
       </View>
@@ -96,7 +105,14 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "50%",
     color: "grey",
+    height: 50,
+    // borderColor: "gray",
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    width: "50%",
   },
+
   inputFields: {
     height: 40,
     marginTop: 12,
