@@ -21,6 +21,7 @@ function CreateBehaviorForm(props) {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [focusBorderColor, setFocusBorderColor] = useState("black");
+  const [behaviors, setBehaviors] = useState(null);
 
   function customOnFocus() {
     setFocusBorderColor("blue");
@@ -32,6 +33,20 @@ function CreateBehaviorForm(props) {
     }
     return null;
   };
+
+
+  //function to post data to database?
+const handleSubmitBehavior = () => {
+  let reqBody = { name, method}
+  axios.post('http://35.188.206.191/behaviors------', reqBody)
+  .then((response)=>{
+    setBehaviors(response.data)})
+    //redirect to some other page, like homescreen?
+  .catch((error)=>console.log(error))
+}
+
+
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
