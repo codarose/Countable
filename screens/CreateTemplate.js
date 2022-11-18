@@ -17,6 +17,7 @@ const behaviorDropDown = [
   { label: "Asking for Food", value: "11" },
 ];
 const CreateTemplate = ({ navigation }) => {
+  const [duration, setDuration] = useState("00:00:00");
   const [newTemplate, setNewTemplate] = useState({});
   const [selectedBehaviors, setSelectedBehaviors] = useState([]);
   useEffect(() => {
@@ -24,7 +25,7 @@ const CreateTemplate = ({ navigation }) => {
     //getTemplatesFromAPI();
   }, []);
 
-  const pushTemplatesFromAPI = () => {
+  const pushTemplatesFromAPI = ({ navigation }) => {
     dataAPI
       .post("new_template")
       .then(function (response) {
@@ -55,32 +56,18 @@ const CreateTemplate = ({ navigation }) => {
             placeHolder="session notes"
           />
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.inputFields}>Duration of Session</Text>
+            <Text style={styles.inputFields}>
+              Duration of Session (hours, min and sec)
+            </Text>
             <Text style={styles.redAsterisk}>*</Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.timeStyle}>Hours</Text>
-            <TextInput
-              style={styles.timeInput}
-              // onChangeText={onAddBehavior}
-              // value={sessionNotes}
-              placeHolder="session notes"
-            />
-            <Text>Minutes:</Text>
-            <TextInput
-              style={styles.timeInput}
-              // onChangeText={onAddBehavior}
-              // value={sessionNotes}
-              placeHolder="session notes"
-            />
-            <Text>Seconds:</Text>
-            <TextInput
-              style={styles.timeInput}
-              // onChangeText={onAddBehavior}
-              // value={sessionNotes}
-              placeHolder="session notes"
-            />
-          </View>
+          <TextInput
+            style={styles.input}
+            onChangeText={setDuration}
+            value={duration}
+            placeHolder="session notes"
+          />
+
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.inputFields}>Behaviors to Track</Text>
             <Text style={styles.redAsterisk}>*</Text>
@@ -120,7 +107,7 @@ const CreateTemplate = ({ navigation }) => {
           </Pressable>
           <Pressable
             style={styles.startButton}
-            onPress={() => this.props.navigation.navigate("ActiveSession")}
+            onPress={() => navigation.navigate("Home")}
           >
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
