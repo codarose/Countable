@@ -29,7 +29,6 @@ class HomeScreen extends Component {
           //  onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
         <View>
-        <Text>Hi</Text>
           <Text style={styles.welcomeMessage}>Welcome to Countability!</Text>
           <Text style={styles.subHeading}>
             A Clinical Behavior Tracking App
