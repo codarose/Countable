@@ -1,57 +1,111 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { Component } from "react";
 
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
+import axios from 'axios'; //will need to have axios installed and imported into file
 
-const CreateSubject = () => {
-  const [subjectName, setSubjectName] = useState("");
-  const handleSubjectName = (e) => setSubjectName(e.target.value);
+class CreateSubject extends Component {
 
-  const [template, setTemplate] = useState(null);
-  const handleSubjectTemplate = (e) => setTemplate(e.target.value);
+const [templates, setTemplates] = useState(null); //list of templates
+const [subjects, setSubjects] = useState(null); //list of subjets
+const [subName, setSubName] = useState(''); //subject's name
+const [description, setDescription] = useState(''); //subject's description
+const [behaviors, setBehaviors] = useState(null);
+ 
+const handleName = (e) => setName(e.target.value);
+const handleDescription= (e)=> setDescription(e.target.value);
 
-  //would useState(behaviors) make it display what we want?
-  const [behaviors, setBehaviors] = useState("");
-  const handleBehaviors = (e) => setTemplate(e.target.value);
+  // function to submit subjects to the database
+const handleSubmitSubject = (e) => {
+  e.preventDefault();
+  const reqBody = { subName, description } //This will be the object sent with the user input name and desc.
+  axios.post("http://35.188.206.191/------", reqBody).then((response)=> {
+    console.log(response.data);
+  }).catch((error)=>console.log(error))
+}
 
-  const handleSubmitSubject = (event) => {
-    event.preventDefault();
-    const requestBody = { subjectName, template };
+  //get request for all templates
+const getAllTemplates = () => {
+  axios.get("http://35.188.206.191/templates").then((response) => {
+    setTemplates(response.data) //that should set the response's data to "templates,"  an array templates
+  }).catch((error) => console.log(error));
+}
 
-    axios
-      .post(`${API_URL}/api/-----------`, requestBody, {
-        // headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}`}
-      })
-      .then((response) => {
-        console.log(response.data);
-        //nav to new active session
-      })
-      .catch((err) => setMessage(err.response.data.message));
-  };
+// get request for all subjects
+const getAllSubjects = () => {
+  axios.get("http://35.188.206.191/------------").then((response) => {
+    setSubjects(response.data) //that should set the response's data to "subjects,"  an array of subjects
+  }).catch((error) => console.log(error));
+} //and then will need to map through them (see code in "render")
+
+//get request for all behaviors
+const getAllBehaviors = () => {
+  axios.get(""). then((response)=>{
+    setBehaviors(response.data)//should set the response's data to "behaviors," an array of behaviors
+  }).catch((error)=>console.log(error))
+}
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Choose or Create a Subject: </Text>
+
+{/* map through subjects from data received in API call*/}
+subjects.map((subject) =>{
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.inputText}
-        placeholder="Enter Subject Name"
-        value={subjectName}
-        onChangeText={(subjectName) => setSubjectName(subjectName)}
-      />
-      <TextInput
-        style={styles.inputText}
-        placeholder="Notes"
-        value={subjectName}
-        onChangeText={(subjectName) => setSubjectName(subjectName)}
-      />
-      {/* do we want input here? Maybe yes but with drop down menu of selections */}
+    //we will need to make these selectable
+    <Text>{subject.name}</Text>
+    <Text>{subject.description}</Text>
+  )
+})
 
-      <Button
-        title=""
-        // onPress={handleSubmitSubject}
-        onPress={() => this.props.navigation.navigate("ActiveSession")}
-      />
-    </View>
-  );
-};
+{/* A form will need to be built that will run the function handleSubmitSubject to post to API
+
+<input
+                type="text"
+                name="name"
+                value={name}
+                onChange={handleName}
+              />
+
+              <input
+                type="text"
+                name="description"
+                value={description}
+                onChange={handleDescription}
+              />
+ */}
+
+        <Text>Choose a Template </Text>
+
+        templates.map((template) => {
+  return (
+    //these will need to be made selectable
+    <Text>{template.title}</Text>
+    <Text>{template.comment}</Text>
+  )
+})
+
+
+        <Button title="Add Behaviors" />
+
+//map through data from API call
+
+behaviors.map((behavior) =>{
+  return (
+    //we will need to make this selectable
+    <Text>{behavior.name}</Text>
+  )
+})
+        <Button
+          title="Begin Session"
+          onPress={() => this.props.navigation.navigate("ActiveSession")}
+        />
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -59,11 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  inputText: {
-    height: 45,
-    marginBottom: 15,
   },
 });
 export default CreateSubject;
