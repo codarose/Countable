@@ -17,13 +17,20 @@ const data = [
 ];
 
 function CreateBehaviorForm(props) {
-  const [behavior, onAddBehavior] = useState("Type a Behavior Here");
+  const [behavior, onAddBehavior] = useState("Enter Behavior Name");
+  const [behaviorNotes, onAddBehaviorNotes] = useState("Enter Behavior Notes");
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [focusBorderColor, setFocusBorderColor] = useState("black");
+  const [borderColor, setBorderColor] = useState("gray");
 
   function customOnFocus() {
-    setFocusBorderColor("blue");
+    setBorderColor("orange");
+    onAddBehavior("");
+  }
+
+  function customOnBlur() {
+    setBorderColor("gray");
+    // onAddBehavior("Enter Behavior Name");
   }
 
   const renderLabel = () => {
@@ -34,24 +41,32 @@ function CreateBehaviorForm(props) {
   };
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row" }}>
-        <Text style={styles.inputFields}>Behavior Name: </Text>
-
+      <Text style={styles.createNewBehavior}>Create a new Behavior</Text>
+      <View style={styles.formStyling}>
+        <Text style={styles.specify}>
+          Create a name and set the type of measurement for your behavior.
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.inputFields}>Name</Text>
+          <Text style={styles.redAsterisk}>*</Text>
+        </View>
         <TextInput
-          style={[{ borderColor: focusBorderColor }, styles.input]}
+          style={[{ borderColor: borderColor }, styles.input]}
           onChangeText={onAddBehavior}
           value={behavior}
           onFocus={customOnFocus}
+          onBlur={customOnBlur}
           placeHolder=""
         />
-      </View>
-      <View style={{ flexDirection: "row" }}>
-        <Text style={styles.inputFields}>Method: </Text>
 
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.inputFields}>Type of Measurement</Text>
+          <Text style={styles.redAsterisk}>*</Text>
+        </View>
         {/* Replace buttons with a drop down list */}
         {renderLabel()}
         <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+          style={[styles.dropdown, isFocus && { borderColor: "orange" }]}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -78,14 +93,25 @@ function CreateBehaviorForm(props) {
           //   />
           // )}
         />
-      </View>
-      <View style={{ flexDirection: "row" }}>
-        <Pressable style={styles.saveButton}>
-          <Text style={styles.buttonText}>Save</Text>
-        </Pressable>
-        <Pressable style={styles.cancelButton}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </Pressable>
+        <Text style={styles.inputFields}>
+          Notes (optional)</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={onAddBehavior}
+          value={behaviorNotes}
+          onFocus={customOnFocus}
+          onBlur={customOnBlur}
+          placeHolder="behavior notes"
+        />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Pressable style={styles.saveButton}>
+            {/* */}
+            <Text style={styles.buttonText}>Add</Text>
+          </Pressable>
+          <Pressable style={styles.cancelButton}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -97,34 +123,79 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: "100%",
   },
-  input: {
+  formStyling: {
+    borderStyle: "solid",
+    borderWidth: ".4px",
+    borderColor: "#222222",
+    margin: 4,
+    marginRight: 0,
+    padding: 1,
+    width: "93%",
+  },
+  createNewBehavior: {
+    fontSize: 20,
+    color: "#222222",
+    paddingTop: 15,
+    paddingBottom: 4,
+    paddingLeft: 10,
+    fontWeight: "500",
+    marginRight: 165,
+  },
+  specify: {
+    paddingLeft: 10,
+    fontSize: 15,
+    color: "#222222",
+    paddingRight: 20,
+  },
+  dropdown: {
+    margin: 8,
+    marginTop: 0,
     height: 40,
-    margin: 12,
+    borderColor: "gray",
+    borderWidth: 0.5,
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    width: "95%",
+    backgroundColor: "#D3D3D3",
+    color: "#222222",
+  },
+
+  input: {
+    marginLeft: 8,
+    marginTop: 0,
     borderWidth: 1,
     padding: 10,
-    width: "50%",
-    color: "grey",
-    height: 50,
-    // borderColor: "gray",
+    width: "95%",
+    color: "#222222",
+    height: 40,
+    backgroundColor: "#D3D3D3",
     borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    width: "50%",
+    borderRadius: 4,
+    paddingHorizontal: 12,
   },
 
   inputFields: {
     height: 40,
-    marginTop: 12,
-    marginBottom: 12,
+    marginTop: 4,
+    marginBottom: 0,
     marginLeft: 3,
-    marginRight: 3,
-    borderColor: "white",
-    borderWidth: 1,
-    padding: 10,
+    marginRight: 0,
+    paddingTop: 12,
+    paddingBottom: 0,
+    paddingRight: 0,
     textAlignVertical: "auto",
-    fontSize: "18px",
+    fontSize: 16,
     textAlign: "left",
+  },
+  redAsterisk: {
+    color: "red",
+    fontSize: "18px",
+    marginTop: 16,
+    marginBottom: 6,
+    marginLeft: 1,
+    marginRight: 3,
   },
   addButton: {
     backgroundColor: "rgba(0, 127, 255, 0.6)",
@@ -132,8 +203,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
-    marginBottom: "1%",
-    marginTop: "1%",
+    marginBottom: 1,
+    marginTop: 1,
     borderRadius: 4,
     elevation: 3,
   },
@@ -150,37 +221,31 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   saveButton: {
-    backgroundColor: "green",
+    backgroundColor: "blue",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 10,
-    marginBottom: "1%",
-    marginTop: "1%",
+    padding: 8,
+    marginBottom: 4,
+    marginTop: 10,
     marginRight: 10,
     borderRadius: 4,
     elevation: 3,
-    width: "25%",
+    width: "20%",
+    marginLeft: 190,
   },
   cancelButton: {
     backgroundColor: "red",
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
-    marginBottom: "1%",
-    marginTop: "1%",
+    padding: 8,
+    marginBottom: 4,
+    marginTop: 10,
     borderRadius: 4,
     elevation: 3,
-    width: "25%",
-    marginLeft: 10,
+    width: "20%",
+    marginLeft: 8,
+    
   },
-  dropdown: {
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    width: "50%",
-  },
+
   icon: {
     marginRight: 5,
   },
@@ -194,11 +259,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: 14,
+    color: "#222222",
   },
   selectedTextStyle: {
-    fontSize: 16,
-    textAlign: "center",
+    fontSize: 14,
+    textAlign: "left",
   },
   iconStyle: {
     width: 20,

@@ -45,11 +45,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    borderTopWidth: "1px",
   },
   createButtonView: {
     //flex: 0.1,
-    borderBottomWidth: "1px",
     width: "100%",
     maxWidth: 550,
   },
@@ -79,11 +77,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     marginBottom: "3%",
     marginTop: "3%",
-    marginLeft: '10%',
-    marginRight: '10%',
+    marginLeft: "10%",
+    marginRight: "10%",
     borderRadius: 4,
     elevation: 3,
-   
   },
   buttonText: {},
 });
