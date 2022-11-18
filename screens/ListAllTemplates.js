@@ -60,14 +60,20 @@ const ListAllTemplates = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.screenHeader}>List of Existing Templates </Text>
+      <Text style={styles.screenHeader}>Choose a Template </Text>
       {console.log(templates)}
       <View style={styles.listContainer}>
         <FlatList
           data={templates}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Text style={styles.item}>{item.title}</Text>
+            <Pressable
+              //this is where pressing a template should populate a individual template
+              //view
+              onClick={() => {}}
+            >
+              <Text style={styles.item}>{item.title}</Text>
+            </Pressable>
           )}
         />
       </View>

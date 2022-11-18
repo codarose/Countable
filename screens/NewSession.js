@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import { MultiSelect } from "react-native-element-dropdown";
+import dataAPI from "../apis/dataAPI";
 
 import {
   StyleSheet,
@@ -37,6 +38,11 @@ const NewSession = ({ navigation }) => {
     "Enter Environment Notes"
   );
 
+  useEffect(() => {
+    //templateResponse();
+    // getTemplatesFromAPI();
+  }, []);
+
   const addBehaviorToSession = () => {};
   const ifAddNewSubject = () => {
     return (
@@ -64,12 +70,21 @@ const NewSession = ({ navigation }) => {
   {
     return (
       <View style={styles.container}>
-        <Text style={styles.startNewSession}>Set Up a One Time Session</Text>
+        <Text style={styles.startNewSession}>Set Up a Session</Text>
         <View style={styles.formStyling}>
+          <Text style={styles.inputFields}>Name of Session</Text>
+          <TextInput
+            style={styles.input}
+            // onChangeText={onAddBehavior}
+            // value={sessionNotes}
+            placeHolder="session notes"
+          />
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.inputFields}>Choose a Subject</Text>
+            <Text style={styles.inputFields}>Choose or Create a Subject</Text>
+
             <Text style={styles.redAsterisk}>*</Text>
           </View>
+
           <Dropdown
             style={[styles.dropdown, isFocus && { borderColor: "orange" }]}
             placeholderStyle={styles.placeholderStyle}
@@ -101,7 +116,7 @@ const NewSession = ({ navigation }) => {
           />
 
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.inputFields}>Choose Behaviors for Session</Text>
+            <Text style={styles.inputFields}>Choose or Create a Template</Text>
             <Text style={styles.redAsterisk}>*</Text>
           </View>
           <MultiSelect
@@ -161,10 +176,10 @@ const NewSession = ({ navigation }) => {
           </View>
         </View>
 
-        <Text style={styles.inputFields}>
+        {/* <Text style={styles.inputFields}>
           Did you mean to set up a recurring session? If so,
-        </Text>
-        <View style={{ flexDirection: "row" }}>
+        </Text> */}
+        {/* <View style={{ flexDirection: "row" }}>
           <Text style={styles.inputFields}>consider</Text>
 
           <Pressable
@@ -173,7 +188,7 @@ const NewSession = ({ navigation }) => {
           >
             <Text style={styles.templateButtonText}>creating a template</Text>
           </Pressable>
-        </View>
+        </View> */}
       </View>
     );
   }

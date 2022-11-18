@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Component } from "react";
 import { MultiSelect } from "react-native-element-dropdown";
+import dataAPI from "../apis/dataAPI";
 
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
 const behaviorDropDown = [
@@ -16,7 +17,25 @@ const behaviorDropDown = [
   { label: "Asking for Food", value: "11" },
 ];
 const CreateTemplate = ({ navigation }) => {
+  const [newTemplate, setNewTemplate] = useState({});
   const [selectedBehaviors, setSelectedBehaviors] = useState([]);
+  useEffect(() => {
+    //templateResponse();
+    //getTemplatesFromAPI();
+  }, []);
+
+  const pushTemplatesFromAPI = () => {
+    dataAPI
+      .post("new_template")
+      .then(function (response) {
+        //     setTemplates(response.data);
+        setTemplates(response.data);
+        //console.log(allTemplates);
+      })
+      .catch(function (error) {
+        // console.log(error);
+      });
+  };
 
   {
     return (
@@ -25,24 +44,47 @@ const CreateTemplate = ({ navigation }) => {
           <Text style={styles.createTemplate}>
             Create a New Reusable Template
           </Text>
-          <Text style={styles.inputFields}>Session Template Title</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.inputFields}>Session Template Title</Text>
+            <Text style={styles.redAsterisk}>*</Text>
+          </View>
           <TextInput
             style={styles.input}
             // onChangeText={onAddBehavior}
-            //  value={sessionNotes}
+            // value={title}
             placeHolder="session notes"
           />
-
-          <Text style={styles.inputFields}>Duration of Session</Text>
-          <TextInput
-            style={styles.input}
-            // onChangeText={onAddBehavior}
-            //  value={sessionNotes}
-            placeHolder="session notes"
-          />
-          <Text style={styles.inputFields}>
-            Behaviors Associated to this Session Template
-          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.inputFields}>Duration of Session</Text>
+            <Text style={styles.redAsterisk}>*</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.timeStyle}>Hours</Text>
+            <TextInput
+              style={styles.timeInput}
+              // onChangeText={onAddBehavior}
+              // value={sessionNotes}
+              placeHolder="session notes"
+            />
+            <Text>Minutes:</Text>
+            <TextInput
+              style={styles.timeInput}
+              // onChangeText={onAddBehavior}
+              // value={sessionNotes}
+              placeHolder="session notes"
+            />
+            <Text>Seconds:</Text>
+            <TextInput
+              style={styles.timeInput}
+              // onChangeText={onAddBehavior}
+              // value={sessionNotes}
+              placeHolder="session notes"
+            />
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={styles.inputFields}>Behaviors to Track</Text>
+            <Text style={styles.redAsterisk}>*</Text>
+          </View>
 
           <MultiSelect
             style={styles.dropdown}
@@ -54,7 +96,7 @@ const CreateTemplate = ({ navigation }) => {
             data={behaviorDropDown}
             labelField="label"
             valueField="value"
-            placeholder="Select item"
+            placeholder="Select behaviors"
             searchPlaceholder="Search..."
             value={selectedBehaviors}
             onChange={(item) => {
@@ -72,6 +114,17 @@ const CreateTemplate = ({ navigation }) => {
           />
           <Pressable title="Save" />
         </View>
+        <View style={{ flexDirection: "row" }}>
+          <Pressable style={styles.cancelButton}>
+            <Text style={styles.buttonText}>Clear Form</Text>
+          </Pressable>
+          <Pressable
+            style={styles.startButton}
+            onPress={() => this.props.navigation.navigate("ActiveSession")}
+          >
+            <Text style={styles.buttonText}>Save</Text>
+          </Pressable>
+        </View>
       </View>
     );
   }
@@ -82,6 +135,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  timeStyle: {
+    marginBottom: 3,
   },
   dropdown: {
     margin: 8,
@@ -94,6 +150,22 @@ const styles = StyleSheet.create({
     width: "95%",
     backgroundColor: "#D3D3D3",
     color: "#222222",
+  },
+  timeInput: {
+    width: "15%",
+    backgroundColor: "#D3D3D3",
+    paddingRight: 2,
+    marginLeft: 8,
+    marginTop: 0,
+    borderWidth: 1,
+    padding: 10,
+
+    color: "#222222",
+    height: 40,
+    backgroundColor: "#D3D3D3",
+    borderWidth: 0.5,
+    borderRadius: 4,
+    paddingHorizontal: 12,
   },
   formStyling: {
     borderStyle: "solid",
@@ -179,6 +251,14 @@ const styles = StyleSheet.create({
     elevation: 3,
     width: "20%",
     marginLeft: 8,
+  },
+  redAsterisk: {
+    color: "red",
+    fontSize: "18px",
+    marginTop: 16,
+    marginBottom: 6,
+    marginLeft: 1,
+    marginRight: 3,
   },
 });
 export default CreateTemplate;
