@@ -29,7 +29,7 @@ const behaviorDropDown = [
   { label: "Asking a question", value: "5" },
   { label: "Ignoring direct questions", value: "6" },
 ];
-const NewSession = () => {
+const NewSession = ({ navigation }) => {
   const [selectedBehaviors, setSelectedBehaviors] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
   const [subjectName, setSubjectName] = useState(null);
@@ -168,7 +168,10 @@ const NewSession = () => {
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.inputFields}>consider</Text>
 
-          <Pressable style={styles.templateButton}>
+          <Pressable
+            style={styles.templateButton}
+            onPress={() => navigation.navigate("CreateTemplate")}
+          >
             <Text style={styles.templateButtonText}>creating a template</Text>
           </Pressable>
         </View>

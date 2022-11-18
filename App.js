@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"; //I
 
 import HomeScreen from "./screens/HomeScreen";
 import NewSession from "./screens/NewSession";
-import ListAllTemplates from "./screens/NewSession";
+import ListAllTemplates from "./screens/ListAllTemplates";
 import ListAllSubjects from "./screens/ListAllSubjects";
 import ListAllSessions from "./screens/ListAllSessions";
 import CreateBehavior from "./screens/CreateBehavior";
@@ -89,7 +89,7 @@ export default function App() {
             component={ViewTemplate}
             options={{ title: "Countability - {templateName}" }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="ListAllBehaviors"
             component={ListAllBehaviors}
             options={{ title: "Countability - All Behaviors" }}

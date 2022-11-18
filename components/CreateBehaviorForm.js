@@ -21,7 +21,8 @@ function CreateBehaviorForm(props) {
   const [behaviorNotes, onAddBehaviorNotes] = useState("Enter Behavior Notes");
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [borderColor, setBorderColor] = useState("gray");
+  const [focusBorderColor, setFocusBorderColor] = useState("black");
+  const [behaviors, setBehaviors] = useState(null);
 
   function customOnFocus() {
     setBorderColor("orange");
@@ -39,6 +40,20 @@ function CreateBehaviorForm(props) {
     }
     return null;
   };
+
+
+  //function to post data to database?
+const handleSubmitBehavior = () => {
+  let reqBody = { name, method}
+  axios.post('http://35.188.206.191/behaviors------', reqBody)
+  .then((response)=>{
+    setBehaviors(response.data)})
+    //redirect to some other page, like homescreen?
+  .catch((error)=>console.log(error))
+}
+
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.createNewBehavior}>Create a new Behavior</Text>
