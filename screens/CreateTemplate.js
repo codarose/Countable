@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Component } from "react";
 import { MultiSelect } from "react-native-element-dropdown";
 import dataAPI from "../apis/dataAPI";
-
+import axios from "axios";
+import _ from "lodash";
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
 const behaviorDropDown = [
   { label: "Add New", value: "1" },
@@ -16,27 +17,90 @@ const behaviorDropDown = [
   { label: "Tantrum", value: "10" },
   { label: "Asking for Food", value: "11" },
 ];
+
+//sample data to send to the new_template end point
+// sampleTemplate = {
+//   title: "Sample Title",
+//   duration: 3600,
+//   behaviors_object: [
+//     { behavior_id: id1, class_id: id2 },
+//     { behavior_id: id1, class_id: id2 },
+//   ],
+// };
 const CreateTemplate = ({ navigation }) => {
   const [duration, setDuration] = useState("00:00:00");
+  const [templateName, setTemplateName] = useState("Add a Name");
   const [newTemplate, setNewTemplate] = useState({});
   const [selectedBehaviors, setSelectedBehaviors] = useState([]);
-  useEffect(() => {
-    //templateResponse();
-    //getTemplatesFromAPI();
-  }, []);
+  const [behaviorList, setBehaviorList] = useState([]);
+  const [allBehaviors, setAllBehaviors] = useState([]);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const pushTemplatesFromAPI = ({ navigation }) => {
+  useEffect(() => {
+    getBehaviorsFromAPI();
+    filterBehaviorsForTemplate();
+    if (formSubmitted) {
+      pushTemplateToAPI();
+    }
+  }, [selectedBehaviors, formSubmitted]);
+
+  // I will attempt to create the API fn to
+  // send the new template to the server here (still not working)
+  const pushTemplateToAPI = () => {
     dataAPI
-      .post("new_template")
+      .post("new_template", {
+        title: "Template Test",
+        duration: 4000,
+        behaviors_object: [],
+      })
       .then(function (response) {
-        //     setTemplates(response.data);
-        setTemplates(response.data);
-        //console.log(allTemplates);
+        //console.log(response);
       })
       .catch(function (error) {
-        // console.log(error);
+        console.log(error);
       });
   };
+
+  //We will need a function to convert our time input into
+  //seconds
+
+  //fetch the behaviors to populate
+  //the dropdown selection menu
+  const getBehaviorsFromAPI = async () => {
+    dataAPI
+      .get("behaviors")
+      .then(function (response) {
+        setAllBehaviors(response.data);
+        let extractedTitles = response.data.map(function (item) {
+          return {
+            label: item.title,
+            value: item.id,
+          };
+        });
+
+        setBehaviorList(extractedTitles);
+        // console.log(behaviorList);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  //we will need a function to filter the objects for the
+  //template based on the array created by multiselect dropdown.
+  //this array value is being stored in variable "selectedBehaviors",
+  //it is a list of select "id" values from the behavior object.
+  //can do a filter on all behaviors and use these id values to filter.
+  const filterBehaviorsForTemplate = () => {
+    let value = allBehaviors.filter(function (item) {
+      return _.includes(selectedBehaviors, item.id);
+    });
+    // console.log(allBehaviors);
+    // console.log(selectedBehaviors);
+    // console.log(value);
+    return value;
+  };
+  //data structure: selectedBehaviors = [1,2,3,4]
 
   {
     return (
@@ -51,8 +115,8 @@ const CreateTemplate = ({ navigation }) => {
           </View>
           <TextInput
             style={styles.input}
-            // onChangeText={onAddBehavior}
-            // value={title}
+            onChangeText={setTemplateName}
+            value={templateName}
             placeHolder="session notes"
           />
           <View style={{ flexDirection: "row" }}>
@@ -80,7 +144,7 @@ const CreateTemplate = ({ navigation }) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             search
-            data={behaviorDropDown}
+            data={behaviorList}
             labelField="label"
             valueField="value"
             placeholder="Select behaviors"
@@ -99,6 +163,7 @@ const CreateTemplate = ({ navigation }) => {
             // )}
             selectedStyle={styles.selectedStyle}
           />
+          {/* {console.log(selectedBehaviors)} */}
           <Pressable title="Save" />
         </View>
         <View style={{ flexDirection: "row" }}>
@@ -107,7 +172,11 @@ const CreateTemplate = ({ navigation }) => {
           </Pressable>
           <Pressable
             style={styles.startButton}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => {
+              setFormSubmitted(true),
+                pushTemplateToAPI,
+                navigation.navigate("Home");
+            }}
           >
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
