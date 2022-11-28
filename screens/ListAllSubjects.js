@@ -3,21 +3,20 @@ import { Component } from "react";
 
 import { StyleSheet, Text, View, Button } from "react-native";
 
-class ListAllSubjects extends Component {
-  render() {
+const ListAllSubjects = ({ navigation }) => {
+  {
     return (
       <View style={styles.container}>
         <Text>Choose or Create a Subject: </Text>
-        
 
         <Button
           title="Add New Subject"
-          onPress={() => this.props.navigation.navigate("CreateSubject")}
+          onPress={() => navigation.navigate("CreateSubject")}
         />
       </View>
     );
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {

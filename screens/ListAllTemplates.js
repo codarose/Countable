@@ -44,7 +44,7 @@ const ListAllTemplates = ({ navigation }) => {
 
   const getTemplatesFromAPI = () => {
     dataAPI
-      .get("templates")
+      .get("/templates")
       .then(function (response) {
         //     setTemplates(response.data);
         setTemplates(response.data);

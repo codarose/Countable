@@ -4,7 +4,15 @@ import { MultiSelect } from "react-native-element-dropdown";
 import dataAPI from "../apis/dataAPI";
 import axios from "axios";
 import _ from "lodash";
-import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 const behaviorDropDown = [
   { label: "Add New", value: "1" },
   { label: "Pacing", value: "2" },
@@ -21,44 +29,63 @@ const behaviorDropDown = [
 //sample data to send to the new_template end point
 // sampleTemplate = {
 //   title: "Sample Title",
-//   duration: 3600,
-//   behaviors_object: [
-//     { behavior_id: id1, class_id: id2 },
-//     { behavior_id: id1, class_id: id2 },
-//   ],
-// };
+// {"title": "Sample Title",
+// "duration": 3600,
+// "behaviors_object": [{"behavior_class_id": 1},{"behavior_class_id": 2}]
+// }
+
+const behaviors_object = [
+  { behavior_class_id: "id1" },
+  { behavior_class_id: "id2" },
+];
 const CreateTemplate = ({ navigation }) => {
   const [duration, setDuration] = useState("00:00:00");
   const [templateName, setTemplateName] = useState("Add a Name");
   const [newTemplate, setNewTemplate] = useState({});
   const [selectedBehaviors, setSelectedBehaviors] = useState([]);
+
   const [behaviorList, setBehaviorList] = useState([]);
   const [allBehaviors, setAllBehaviors] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [behaviorsForTemplate, setBehaviorsForTemplate] =
+    useState(behaviors_object);
+  const [minutes, setMinutes] = useState("00");
+  const [hours, setHours] = useState("00");
+  const [seconds, setSeconds] = useState("00");
 
   useEffect(() => {
     getBehaviorsFromAPI();
     filterBehaviorsForTemplate();
-    if (formSubmitted) {
-      pushTemplateToAPI();
-    }
-  }, [selectedBehaviors, formSubmitted]);
+    // if (formSubmitted) {
+    //   pushTemplateToAPI();
+    // }
+  }, [selectedBehaviors]);
 
   // I will attempt to create the API fn to
   // send the new template to the server here (still not working)
-  const pushTemplateToAPI = () => {
-    dataAPI
-      .post("new_template", {
-        title: "Template Test",
-        duration: 4000,
-        behaviors_object: [],
-      })
-      .then(function (response) {
-        //console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const pushTemplateToAPI = async () => {
+    let data = {
+      title: templateName,
+      duration: convertDurationForTemplate(hours, minutes, seconds),
+      behaviors_object: behaviorsForTemplate,
+    };
+    console.log("data sent to API: ", data);
+    fetch("http://35.188.206.191/new_template", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    // console.log("data: ", data, "stringified_data: ", JSON.stringify(data));
+    // dataAPI
+    //   .post("/new_template", JSON.stringify(data))
+    //   .then((res) => console.log(res, data))
+
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   //We will need a function to convert our time input into
@@ -68,17 +95,17 @@ const CreateTemplate = ({ navigation }) => {
   //the dropdown selection menu
   const getBehaviorsFromAPI = async () => {
     dataAPI
-      .get("behaviors")
+      .get("/behaviors")
       .then(function (response) {
         setAllBehaviors(response.data);
-        let extractedTitles = response.data.map(function (item) {
+
+        let extractedTitles = response.data.map((item) => {
           return {
             label: item.title,
-            value: item.id,
+            value: item.behavior_class_id,
           };
         });
-
-        setBehaviorList(extractedTitles);
+        if (extractedTitles) setBehaviorList(extractedTitles);
         // console.log(behaviorList);
       })
       .catch(function (error) {
@@ -86,19 +113,40 @@ const CreateTemplate = ({ navigation }) => {
       });
   };
 
+  const convertDurationForTemplate = (hours, minutes, seconds) => {
+    const timeInSeconds =
+      parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds) * 1;
+    return timeInSeconds;
+  };
   //we will need a function to filter the objects for the
   //template based on the array created by multiselect dropdown.
   //this array value is being stored in variable "selectedBehaviors",
   //it is a list of select "id" values from the behavior object.
   //can do a filter on all behaviors and use these id values to filter.
+
   const filterBehaviorsForTemplate = () => {
+    // console.log("selected Behaviors: ", selectedBehaviors);
+    // console.log("behaviors list: ", behaviorList);
     let value = allBehaviors.filter(function (item) {
-      return _.includes(selectedBehaviors, item.id);
+      return _.includes(selectedBehaviors, item.behavior_class_id);
     });
     // console.log(allBehaviors);
     // console.log(selectedBehaviors);
-    // console.log(value);
-    return value;
+    console.log(
+      "behaviors as they will show up after filtering from drop down: ",
+      value
+    );
+    let templateValue = value.map((item) => {
+      return {
+        behavior_class_id: item.behavior_class_id,
+      };
+    });
+    console.log("Stringified Template Value: ", JSON.stringify(templateValue));
+    templateValue = JSON.stringify(templateValue);
+    setBehaviorsForTemplate(templateValue);
+    //setBehaviorsForTemplate(value);
+
+    //  console.log(behaviorsForTemplate);
   };
   //data structure: selectedBehaviors = [1,2,3,4]
 
@@ -125,12 +173,32 @@ const CreateTemplate = ({ navigation }) => {
             </Text>
             <Text style={styles.redAsterisk}>*</Text>
           </View>
-          <TextInput
-            style={styles.input}
-            onChangeText={setDuration}
-            value={duration}
-            placeHolder="session notes"
-          />
+
+          <View style={styles.timeView}>
+            <TextInput
+              keyboardType="numeric"
+              style={styles.timeField}
+              onChangeText={setHours}
+              value={hours}
+              placeHolder="00"
+            />
+            <Text>:</Text>
+            <TextInput
+              keyboardType="numeric"
+              style={styles.timeField}
+              onChangeText={setMinutes}
+              value={minutes}
+              placeHolder="00"
+            />
+            <Text>:</Text>
+            <TextInput
+              keyboardType="numeric"
+              style={styles.timeField}
+              onChangeText={setSeconds}
+              value={seconds}
+              placeHolder="33"
+            />
+          </View>
 
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.inputFields}>Behaviors to Track</Text>
@@ -144,6 +212,7 @@ const CreateTemplate = ({ navigation }) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             search
+            uniqueKey="index"
             data={behaviorList}
             labelField="label"
             valueField="value"
@@ -163,23 +232,23 @@ const CreateTemplate = ({ navigation }) => {
             // )}
             selectedStyle={styles.selectedStyle}
           />
-          {/* {console.log(selectedBehaviors)} */}
+
           <Pressable title="Save" />
         </View>
         <View style={{ flexDirection: "row" }}>
           <Pressable style={styles.cancelButton}>
             <Text style={styles.buttonText}>Clear Form</Text>
           </Pressable>
-          <Pressable
+          <TouchableOpacity
             style={styles.startButton}
             onPress={() => {
-              setFormSubmitted(true),
-                pushTemplateToAPI,
-                navigation.navigate("Home");
+              filterBehaviorsForTemplate();
+              pushTemplateToAPI();
+              navigation.navigate("Home");
             }}
           >
             <Text style={styles.buttonText}>Save</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -191,6 +260,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginLeft: Platform.OS === "web" ? "auto" : "0",
+    marginRight: Platform.OS === "web" ? "auto" : "0",
+    maxWidth: Platform.OS === "web" ? "1000px" : "100%",
   },
   timeStyle: {
     marginBottom: 3,
@@ -207,15 +279,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D3D3",
     color: "#222222",
   },
-  timeInput: {
-    width: "15%",
+  timeView: {
+    flexDirection: "row",
+    width: "95%",
     backgroundColor: "#D3D3D3",
     paddingRight: 2,
     marginLeft: 8,
     marginTop: 0,
     borderWidth: 1,
     padding: 10,
-
     color: "#222222",
     height: 40,
     backgroundColor: "#D3D3D3",
@@ -223,6 +295,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 12,
   },
+  timeField: {
+    width: "30%",
+    fontSize: 16,
+  },
+
   formStyling: {
     borderStyle: "solid",
     borderWidth: ".4px",

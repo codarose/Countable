@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import { MultiSelect } from "react-native-element-dropdown";
 import dataAPI from "../apis/dataAPI";
-
+import StartSessionButton from "../components/UI/Buttons/startSessionButton";
 import {
   StyleSheet,
   Text,
@@ -10,8 +10,10 @@ import {
   ScrollView,
   Pressable,
   TextInput,
+  Dimensions,
 } from "react-native";
 import CreateSubject from "./CreateSubject";
+import CancelButton from "../components/UI/Buttons/cancelButton";
 const subjectDropDown = [
   { label: "Add New", value: "1" },
   { label: "John Doe", value: "2" },
@@ -29,6 +31,8 @@ const behaviorDropDown = [
   { label: "Asking a question", value: "5" },
   { label: "Ignoring direct questions", value: "6" },
 ];
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 const NewSession = ({ navigation }) => {
   const [selectedBehaviors, setSelectedBehaviors] = useState([]);
   const [isFocus, setIsFocus] = useState(false);
@@ -53,7 +57,7 @@ const NewSession = ({ navigation }) => {
     );
   };
 
-  const ifAddNewBehavior = () => {
+  const ifAddNewBehavior = ({ navigation }) => {
     return (
       // Need to add functionality here to expose
       //add behavior if the "Add New" is selected from
@@ -70,9 +74,9 @@ const NewSession = ({ navigation }) => {
   {
     return (
       <View style={styles.container}>
-        <Text style={styles.startNewSession}>Set Up a Session</Text>
         <View style={styles.formStyling}>
-          <Text style={styles.inputFields}>Name of Session</Text>
+          <Text style={styles.startNewSession}>Set Up a New Session</Text>
+          <Text style={styles.inputFields}>Session Name</Text>
           <TextInput
             style={styles.input}
             // onChangeText={onAddBehavior}
@@ -119,32 +123,36 @@ const NewSession = ({ navigation }) => {
             <Text style={styles.inputFields}>Choose or Create a Template</Text>
             <Text style={styles.redAsterisk}>*</Text>
           </View>
-          <MultiSelect
-            style={styles.dropdown}
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: "orange" }]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
+            data={subjectDropDown}
+            maxHeight={300}
             search
-            data={behaviorDropDown}
             labelField="label"
             valueField="value"
-            placeholder="Select item"
+            placeholder={!isFocus ? "Choose or Create a Subject" : "..."}
             searchPlaceholder="Search..."
-            value={selectedBehaviors}
+            value={subjectName}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
             onChange={(item) => {
-              setSelectedBehaviors(item);
+              setSubjectName(item.value);
+              setIsFocus(false);
             }}
             // renderLeftIcon={() => (
             //   <AntDesign
             //     style={styles.icon}
-            //     color="black"
+            //     color={isFocus ? "blue" : "black"}
             //     name="Safety"
             //     size={20}
             //   />
             // )}
-            selectedStyle={styles.selectedStyle}
           />
+
           <Text style={styles.inputFields}>Session Environment (optional)</Text>
           <TextInput
             style={styles.input}
@@ -164,15 +172,10 @@ const NewSession = ({ navigation }) => {
           {/* Data from this screen will have to populate the 
           active session in the next screen - possible? */}
           <View style={{ flexDirection: "row" }}>
-            <Pressable style={styles.cancelButton}>
-              <Text style={styles.buttonText}>Cancel</Text>
-            </Pressable>
-            <Pressable
-              style={styles.startButton}
-              onPress={() => this.props.navigation.navigate("ActiveSession")}
-            >
-              <Text style={styles.buttonText}>Start Session</Text>
-            </Pressable>
+            <CancelButton><Text>cancel</Text></CancelButton>
+            <StartSessionButton>
+              <Text>Start Session</Text>
+            </StartSessionButton>
           </View>
         </View>
 
@@ -195,9 +198,11 @@ const NewSession = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+
   container: {
-    //flex: 1,
-    backgroundColor: "#fff",
+    height: windowHeight,
+    flex: 1,
+    backgroundColor: "#392F5A",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -206,14 +211,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   startNewSession: {
-    fontSize: 20,
-    color: "#222222",
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#FF8811",
     paddingTop: 15,
     paddingBottom: 4,
-    paddingLeft: 10,
+    paddingLeft: 0,
     fontWeight: "500",
     textAlign: "left",
     marginRight: 130,
+    marginLeft: 5,
   },
   dropdown: {
     margin: 8,
@@ -224,7 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 12,
     width: "95%",
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#E8E9EC",
     color: "#222222",
   },
   placeholderStyle: {
@@ -232,14 +239,18 @@ const styles = StyleSheet.create({
     color: "#222222",
   },
   formStyling: {
+    height: 0.8 * windowHeight,
     borderStyle: "solid",
     borderWidth: ".4px",
     borderColor: "#222222",
-    margin: 4,
+    borderRadius: 10,
+    marginTop: 20,
+    marginLeft: 0,
     marginRight: 0,
-    padding: 4,
-    width: "93%",
+    padding: 2,
+    width: "100%",
     overflow: "scroll",
+    backgroundColor: "#FCF8F3",
   },
   inputFields: {
     height: 40,
@@ -266,7 +277,7 @@ const styles = StyleSheet.create({
     width: "95%",
     color: "#222222",
     height: 40,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#E8E9EC",
     borderWidth: 0.5,
     borderRadius: 4,
     paddingHorizontal: 12,
