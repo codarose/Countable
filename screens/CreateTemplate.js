@@ -260,8 +260,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: Platform.OS === "web" ? "auto" : "0",
-    marginRight: Platform.OS === "web" ? "auto" : "0",
+    marginLeft: Platform.OS === "web" ? "auto" : 0,
+    marginRight: Platform.OS === "web" ? "auto" : 0,
     maxWidth: Platform.OS === "web" ? "1000px" : "100%",
   },
   timeStyle: {

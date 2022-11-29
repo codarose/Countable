@@ -1,7 +1,10 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack"; //Insert screens into a stack
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator, Header } from "@react-navigation/drawer";
+
+import { LinearGradient } from "expo-linear-gradient";
+import Entypo from "react-native-vector-icons/Entypo";
 
 import HomeScreen from "./screens/HomeScreen";
 import NewSession from "./screens/NewSession";
@@ -17,6 +20,7 @@ import ViewSubject from "./screens/ViewSubject";
 import ViewTemplate from "./screens/ViewTemplate";
 import CreateTemplate from "./screens/CreateTemplate";
 import ListAllBehaviors from "./screens/ListAllBehaviors";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const DrawerStack = createDrawerNavigator();
 
@@ -38,15 +42,21 @@ export default function App() {
     return (
       <NavigationContainer>
         <DrawerStack.Navigator
-          screenOptions={{
+          screenOptions={({ navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity onPress={navigation.toggleDrawer}>
+                <Entypo name="menu" color="#392F5A" size={45} />
+              </TouchableOpacity>
+            ),
             headerStyle: {
               backgroundColor: "#9DD9D2",
             },
-            headerTintColor: "#fff",
+            headerTintColor: "#000",
             headerTitleStyle: {
               fontWeight: "bold",
+              fontSize: 24,
             },
-          }}
+          })}
         >
           <DrawerStack.Screen
             name="Home"

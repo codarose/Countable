@@ -8,10 +8,14 @@ import {
   Pressable,
   FlatList,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
+
 import axios from "axios";
 import dataAPI from "../apis/dataAPI";
-
+import SelectItemButton from "../components/UI/Buttons/selectItemButton";
+import HomeButton from "../components/UI/Buttons/homeButton";
+import { stubFalse } from "lodash";
 const { width, height } = Dimensions.get("window");
 const sessionTemplateList = [
   { name: "Child Interaction Study", value: "1" },
@@ -60,25 +64,33 @@ const ListAllTemplates = ({ navigation }) => {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.screenHeader}>Choose a Template </Text>
       {console.log(templates)}
       <View style={styles.listContainer}>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.screenHeader}>Observation Templates</Text>
+          <HomeButton>Home</HomeButton>
+        </View>
+        <View style={styles.subText}>
+          <Text style={styles.nameText}>Name: </Text>
+          <Text style={styles.behaviorText}>Behaviors:</Text>
+        </View>
+
         <FlatList
           data={templates}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Pressable
+            <SelectItemButton
               //this is where pressing a template should populate a individual template
               //view
               onClick={() => {}}
             >
-              <Text style={styles.item}>{item.title}</Text>
-            </Pressable>
+              <Text>{item.title}</Text>
+            </SelectItemButton>
           )}
         />
       </View>
       <Pressable
-        style={{ flex: 1 }}
+        style={{ flex: 0.6 }}
         onPress={() => navigation.navigate("CreateTemplate")}
       >
         <Text>Create a New Template</Text>
@@ -90,12 +102,26 @@ const ListAllTemplates = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FCF5E5",
+    backgroundColor: "#392F5A",
+
+    // backgroundColor: "#F5F5F5",
     alignItems: "center",
     justifyContent: "center",
   },
+  subText: {
+    flexDirection: "row",
+    paddingLeft: 20,
+    marginBottom: 5,
+    paddingRight: 60,
+    marginTop: 20,
+  },
+  nameText: {
+    marginRight: 130,
+  },
   listContainer: {
-    width: 0.8 * width,
+    marginTop: 20,
+    padding: 5,
+    width: width,
     borderRadius: width * 0.05,
     backgroundColor: "white",
     margin: 10,
@@ -106,9 +132,11 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   screenHeader: {
-    padingTop: 5,
-    fontSize: 20,
+    padding: 10,
+    fontSize: 25,
     marginTop: 10,
+    color: "#FF8811",
+    fontWeight: "bold",
   },
   item: {
     backgroundColor: "#f9c2ff",

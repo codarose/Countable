@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   button: {
-    backgroundColor: "rgba(244, 208, 111, .8)",
-    //  backgroundColor: "rgba(0, 127, 255, 0.6)",
+   // backgroundColor: "rgba(244, 208, 111, .8)",
+     backgroundColor: "rgba(0, 127, 255, 1)",
     borderWidth: 1,
     borderColor: "#392F5A",
     borderRadius: 20,
@@ -103,26 +103,21 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   buttonText: {
-    color: "777777",
-    // color: "white",
+   // color: "777777",
+    color: "white",
     fontSize: "18px",
     fontWeight: "bold",
   },
 
   welcomeMessage: {
     fontSize: "28px",
-    color: "#FF8811",
-    // color: "#001F54",
+    
+    color: "#001F54",
     textAlign: "center",
     opacity: 1,
     marginBottom: "2%",
     fontWeight: "bold",
     fontFamily: "Arial",
-
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 0.4 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
   },
   subHeading: {
     color: "#392F5A",
